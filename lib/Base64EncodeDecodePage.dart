@@ -1,9 +1,9 @@
 import 'dart:html' as html;
 import 'dart:ui' as ui;
 
+import 'package:base64_encode_decode/AppConstant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'Base64EncoderDecoder.dart';
 
 class Base64EncodeDecodePage extends StatefulWidget {
@@ -16,26 +16,12 @@ class Base64EncodeDecodePage extends StatefulWidget {
 class _Base64EncodeDecodePageState extends State<Base64EncodeDecodePage> {
   html.TextAreaElement encodedTextAreaElement = html.TextAreaElement();
   html.TextAreaElement textAreaElement = html.TextAreaElement();
-  int p = 1;
+  html.FileUploadInputElement fileUploadInputElement = html.FileUploadInputElement();
 
   @override
   void initState() {
     super.initState();
-    encodedTextAreaElement = html.TextAreaElement()
-      ..required = true
-      ..style.border = 'none';
-    encodedTextAreaElement.placeholder = 'Enter base64 Encoded data';
-    encodedTextAreaElement.name = 'encoded-text-area';
-
-    textAreaElement = html.TextAreaElement()
-      ..required = true
-      ..style.border = 'none';
-    textAreaElement.placeholder = 'Decoded data';
-    textAreaElement.name = 'text-area';
-
-    ui.platformViewRegistry.registerViewFactory(encodedTextAreaElement.name, (int id) => encodedTextAreaElement);
-    ui.platformViewRegistry.registerViewFactory(textAreaElement.name, (int id) => textAreaElement);
-    print("11111");
+    init();
   }
 
   @override
@@ -68,19 +54,22 @@ class _Base64EncodeDecodePageState extends State<Base64EncodeDecodePage> {
                 child: HtmlElementView(viewType: encodedTextAreaElement.name)),
             Padding(padding: EdgeInsets.all(20)),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 MaterialButton(
                   height: 50,
-                  color: Colors.lightGreen,
-                  onPressed: ()async {
+                  color: buttonColor,
+                  onPressed: () async {
                     print('MaterialButton ${encodedTextAreaElement.value}');
-                    if(encodedTextAreaElement.value!=null && encodedTextAreaElement.value!.trim().isNotEmpty)
-                      textAreaElement.text=(await Base64EncodeDecode.decodeBase64ToText(encodedTextAreaElement.value!));
+                    if (encodedTextAreaElement.value != null && encodedTextAreaElement.value!.trim().isNotEmpty)
+                      textAreaElement.text =
+                          (await Base64EncodeDecode.decodeBase64ToText(encodedTextAreaElement.value!));
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
+
                         Icons.cached,
                         color: Colors.white,
                       ),
@@ -89,6 +78,33 @@ class _Base64EncodeDecodePageState extends State<Base64EncodeDecodePage> {
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       )
                     ],
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(20)),
+                Container(
+                  decoration: BoxDecoration(color: Colors.white, border: Border.all(color: textColor)),
+                  child: MaterialButton(
+                    height: 50,
+                    color: Colors.white,
+                    onPressed: () async {
+                      print('MaterialButton ${encodedTextAreaElement.value}');
+                      if (encodedTextAreaElement.value != null && encodedTextAreaElement.value!.trim().isNotEmpty)
+                        textAreaElement.text =
+                            (await Base64EncodeDecode.decodeBase64ToText(encodedTextAreaElement.value!));
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.upload,
+                          color: textColor,
+                        ),
+                        Text(
+                          "File Upload",
+                          style: TextStyle(color: textColor, fontSize: 18),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -115,5 +131,25 @@ class _Base64EncodeDecodePageState extends State<Base64EncodeDecodePage> {
         ),
       ),
     );
+  }
+
+  void init() {
+    encodedTextAreaElement = html.TextAreaElement()
+      ..required = true
+      ..style.border = 'none';
+    encodedTextAreaElement.placeholder = 'Enter base64 Encoded data';
+    encodedTextAreaElement.name = 'encoded-text-area';
+
+    textAreaElement = html.TextAreaElement()
+      ..required = true
+      ..style.border = 'none';
+    textAreaElement.placeholder = 'Decoded data';
+    textAreaElement.name = 'text-area';
+
+    fileUploadInputElement.name = 'file-upload';
+
+    ui.platformViewRegistry.registerViewFactory(encodedTextAreaElement.name, (int id) => encodedTextAreaElement);
+    ui.platformViewRegistry.registerViewFactory(textAreaElement.name, (int id) => textAreaElement);
+    ui.platformViewRegistry.registerViewFactory(fileUploadInputElement.name!, (int id) => fileUploadInputElement);
   }
 }
