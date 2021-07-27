@@ -37,7 +37,7 @@ class _Base64EncodePageState extends State<Base64EncodePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Base64 Encode', style: TextStyle(color: Colors.black, fontSize: 40, fontWeight: FontWeight.bold)),
+                Text('Base64 Encode', style: TextStyle(color:textColor, fontSize: 40, fontWeight: FontWeight.bold)),
                 Divider(),
                 Padding(padding: EdgeInsets.all(10)),
                 Row(
@@ -58,20 +58,19 @@ class _Base64EncodePageState extends State<Base64EncodePage> {
                               plainTextAreaElement.value = null;
                               encodedTextAreaElement.value = null;
                             },
-                            icon: Icon(Icons.refresh)),
+                            icon: Icon(Icons.refresh,color: accentIconColor,)),
                         IconButton(
                             onPressed: () {
                               plainTextAreaElement.select();
                               html.document.execCommand("copy");
                             },
-                            icon: Icon(Icons.copy))
+                            icon: Icon(Icons.copy,color: accentIconColor,))
                       ],
                     ),
                   ],
                 ),
                 Container(
                     height: 300,
-                    decoration: BoxDecoration(border: Border.all(width: 1)),
                     child: HtmlElementView(viewType: plainTextAreaElement.name)),
                 Padding(padding: EdgeInsets.all(20)),
                 Column(
@@ -86,7 +85,7 @@ class _Base64EncodePageState extends State<Base64EncodePage> {
                           color: buttonColor,
                           onPressed: () async {
                             if (plainTextAreaElement.value != null && plainTextAreaElement.value!.trim().isNotEmpty)
-                              encodedTextAreaElement.text =
+                              encodedTextAreaElement.value =
                               await Base64Encoder.encodeTextToBase64(plainTextAreaElement.value!.trim())
                                   .catchError((error) {});
                           },
@@ -121,7 +120,7 @@ class _Base64EncodePageState extends State<Base64EncodePage> {
 
                                 reader.onLoadEnd.listen((event) {}).onData((data) async {
                                   plainTextAreaElement.value = reader.result.toString();
-                                  encodedTextAreaElement.text =
+                                  encodedTextAreaElement.value =
                                   await Base64Encoder.encodeTextToBase64(plainTextAreaElement.value!)
                                       .catchError((error) {});
                                 });
@@ -177,14 +176,13 @@ class _Base64EncodePageState extends State<Base64EncodePage> {
                               encodedTextAreaElement.select();
                               html.document.execCommand("copy");
                             },
-                            icon: Icon(Icons.copy))
+                            icon: Icon(Icons.copy,color: accentIconColor,))
                       ],
                     ),
                   ],
                 ),
                 Container(
                     height: 300,
-                    decoration: BoxDecoration(border: Border.all(width: 1)),
                     child: HtmlElementView(viewType: encodedTextAreaElement.name)),
                 Center(
                   child: Container(
@@ -227,20 +225,14 @@ class _Base64EncodePageState extends State<Base64EncodePage> {
 
     void init() {
       plainTextAreaElement = html.TextAreaElement()
-        ..required = true
-        ..style.border = 'none';
+        ..required = true;
       plainTextAreaElement.placeholder = 'Enter text to Encode';
-      plainTextAreaElement.name = 'encoded-text-area';
-      plainTextAreaElement.style.fontFamily = 'Open sans';
-      plainTextAreaElement.style.fontSize = '16px';
+      plainTextAreaElement.name = 'text-area';
 
       encodedTextAreaElement = html.TextAreaElement()
-        ..required = true
-        ..style.border = 'none';
+        ..required = true ;
       encodedTextAreaElement.placeholder = 'Encoded data';
-      encodedTextAreaElement.name = 'text-area';
-      encodedTextAreaElement.style.fontFamily = 'Open sans';
-      encodedTextAreaElement.style.fontSize = '16px';
+      encodedTextAreaElement.name = 'encoded-text-area';
 
       fileUploadInputElement.name = 'file-upload';
 
