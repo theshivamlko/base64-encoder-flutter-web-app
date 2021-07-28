@@ -8,3 +8,4 @@ material.Color accentIconColor=material.Color(0xFF2EA910);
 material.Color accentColor=material.Color(0xFF2EA910);
 material.Color errorTextColor=material.Color(0xFFFF0000);
 
+String domain="dev.navoki.com";

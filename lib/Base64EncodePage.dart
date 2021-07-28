@@ -37,8 +37,7 @@ class _Base64EncodePageState extends State<Base64EncodePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Base64 Encode', style: TextStyle(color:textColor, fontSize: 40, fontWeight: FontWeight.bold)),
-                Divider(),
+
                 Padding(padding: EdgeInsets.all(10)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -235,6 +234,8 @@ class _Base64EncodePageState extends State<Base64EncodePage> {
       encodedTextAreaElement.name = 'encoded-text-area';
 
       fileUploadInputElement.name = 'file-upload';
+
+
 
       ui.platformViewRegistry.registerViewFactory(plainTextAreaElement.name, (int id) => plainTextAreaElement);
       ui.platformViewRegistry.registerViewFactory(encodedTextAreaElement.name, (int id) => encodedTextAreaElement);
